@@ -3,6 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+        attention, if you want to change the values, you must change here, to keep it simple, 
+        keep the limit of weight values, you can change the order
+    -->
+    <script id="weights" type="application/json">
+        {
+            "values": {
+                "2": 0, 
+                "3": 1, 
+                "4": 2, 
+                "5": 3, 
+                "6": 4, 
+                "7": 5, 
+                "8": 6, 
+                "9": 7, 
+                "J": 8, 
+                "Q": 9, 
+                "K": 10, 
+                "A": 11
+            },
+            "suits": { 
+                "♣": 3, 
+                "♥": 2, 
+                "♠": 1, 
+                "♦": 0
+            }
+        }
+    </script>
     <title>Word Calculator</title>
     <style>
         * {
@@ -115,7 +143,7 @@
         <p class="card-count">Cards inserted: <span id="cardCount">0</span>/4</p>
 
         <div class="inputContainer">
-            <input type="text" id="cardInput" placeholder="insert" maxlength="3" disabled>
+            <input type="text" id="cardInput" placeholder="insert" maxlength="2" disabled>
         </div>
 
         <div class="card-buttons">
@@ -126,6 +154,8 @@
                 <button class="card" data-card="5">5</button>
                 <button class="card" data-card="6">6</button>
                 <button class="card" data-card="7">7</button>
+                <button class="card" data-card="8">8</button>
+                <button class="card" data-card="9">9</button>
                 <button class="card" data-card="J">J</button>
                 <button class="card" data-card="Q">Q</button>
                 <button class="card" data-card="K">K</button>
@@ -182,11 +212,7 @@
         suitButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const suit = button.dataset.suit;
-                if (input.value.startsWith("10")) {
-                    input.value = "10" + suit;
-                } else {
-                    input.value = (input.value.slice(0, 1) || "") + suit;
-                }
+                input.value = (input.value.slice(0, 1) || "") + suit;
                 enableSubmit();
             });
         });
@@ -225,11 +251,19 @@
             submitButton.disabled = input.value.length < 2;
         }
 
+        function getJsonData() {
+            const jsonDataElement = document.getElementById('weights');
+            if (!jsonDataElement) {
+                throw new Error('Error in json');
+            }
+            return JSON.parse(jsonDataElement.textContent);
+        }
+
         function cardToNumber(card) {
-            const values = {
-                '2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6, '9': 7, 'J': 8, 'Q': 9, 'K': 10, 'A': 11
-            };
-            const suits = { '♣': 3, '♥': 2, '♠': 1, '♦': 0 };
+            const data = getJsonData()
+
+            const values = data.values;
+            const suits = data.suits;
             const value = card.slice(0, -1);
             const suit = card.slice(-1);
 
