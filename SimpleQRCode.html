@@ -52,6 +52,8 @@
         }
         #qrcode {
             margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
         }
     </style>
 </head>
@@ -63,7 +65,7 @@
             <input type="text" id="data" name="data" required>
             <button type="submit">Submit</button>
         </form>
-        <canvas  id="qrcode"></canvas>
+        <div id="qrcode"></div>
     </div>
 
     <script>
@@ -74,8 +76,12 @@
 
             if (!input) return;
 
-            QRCode.toCanvas(qrContainer, input, { width: 200 }, function (error) {
-                if (error) console.error(error);
+            QRCode.toString(input, { type: 'svg', width: 300 }, function (error, svg) {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                qrContainer.innerHTML = svg;
             });
         }
     </script>
