@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple QRCode</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        #qrcode {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form onsubmit="event.preventDefault(); generateQRCode();">
+            <h1>Simple QR Code</h1>
+            <label for="data">Enter your information:</label>
+            <input type="text" id="data" name="data" required>
+            <button type="submit">Submit</button>
+        </form>
+        <canvas  id="qrcode"></canvas>
+    </div>
+
+    <script>
+        function generateQRCode() {
+            const input = document.getElementById("data").value.trim();
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = "";
+
+            if (!input) return;
+
+            QRCode.toCanvas(qrContainer, input, { width: 200 }, function (error) {
+                if (error) console.error(error);
+            });
+        }
+    </script>
+</body>
+</html>
